@@ -80,12 +80,14 @@ class Browser:
 
 
     def show_historico(self):
-       if self.historico_completo:
-          historico = "[" + "][".join(self.historico_completo) + "]"
-       else:
-          self.historico = "[ ]"
-       
-       print(f"Historico completo: {historico}")
+        if self.historico_completo:
+            res = ""
+            for item in self.historico_completo:
+                res += f"[{item}]"
+        else:
+            res = "[ ]"
+
+        return res
           
 
 navegador = Browser()
