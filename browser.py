@@ -38,7 +38,7 @@ class Browser:
             print("Arquivo não foi encontrado. Iniciando com Historico vazio.")
             return set()
 
-    def validar_url(self, url) -> bool:
+    def validar_url(self, url):
         return url in self.urls_validas
 
     def adicionar_url(self, url):
@@ -87,7 +87,7 @@ class Browser:
         else:
             res = "[ ]"
 
-        return res
+        return print(f"Historico completo: {res}")
           
 
 navegador = Browser()
