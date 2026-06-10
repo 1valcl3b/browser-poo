@@ -58,15 +58,29 @@ class Browser:
         print("Digite a url ou #back para retornar à última página visitada.")
 
     def navegar_para(self, url_destino):
-        if self.validar_url(url_destino) == False:
+
+        if url_destino.startswith("/"):
+
+            if self.home is None:
+                print("ERRO: Nenhuma página aberta.")
+                return
+
+            url_destino = self.home + url_destino
+
+        if not self.validar_url(url_destino):
             print(f"ERRO: '{url_destino}' não é uma URL válida!")
             return
-        
+
         if self.home is not None:
             self.historico.empilhar(self.home)
+
         self.home = url_destino
 
         self.historico_completo.append(url_destino)
+
+        self.exibir_pagina()
+    
+
 
     def voltar(self):
         if  not self.historico.pilha:
@@ -88,8 +102,61 @@ class Browser:
             res = "[ ]"
 
         return print(f"Historico completo: {res}")
-          
+    
+    def obter_links_disponiveis(self, url):
+        links = []
 
+        prefixo = url + "/"
+
+        for u in self.urls_validas:
+            if u.startswith(prefixo):
+                resto = u[len(prefixo):]
+
+                if "/" not in resto:
+                    links.append("/" + resto)
+
+        return sorted(links)
+    
+    def exibir_pagina(self):
+        print("\nPágina encontrada!")
+
+        self.exibir_conteudo()
+
+        if self.home:
+            links = self.obter_links_disponiveis(self.home)
+
+            if links:
+                print("\nLinks disponíveis:")
+                for link in links:
+                    print(link)
+
+    def obter_arquivo_pagina(self, url):
+        nome_arquivo = url.replace("/", "_") + ".txt"
+        return f"paginas/{nome_arquivo}"
+    
+    def exibir_conteudo(self):
+
+        arquivo = self.obter_arquivo_pagina(self.home)
+
+        try:
+            with open(arquivo, "r", encoding="utf-8") as f:
+                print("\nConteúdo da página:")
+                print("-" * 40)
+                print(f.read())
+                print("-" * 40)
+
+        except FileNotFoundError:
+            print("\nConteúdo da página não cadastrado.")
+
+    def help(self):
+        print("""
+    #add <url>   -> adiciona uma URL
+    #back        -> volta para página anterior
+    #showhist    -> exibe histórico completo
+    #help        -> mostra ajuda
+    #sair        -> encerra o programa
+    """)
+        
 navegador = Browser()
 
 while True:
@@ -112,6 +179,7 @@ while True:
       else:
           url = partes[1]
           navegador.adicionar_url(url)     
-  
+  elif comando == "#help":
+      navegador.help()
   else:
     navegador.navegar_para(comando)
