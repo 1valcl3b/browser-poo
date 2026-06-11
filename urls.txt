@@ -1,8 +1,10 @@
 www.ifpb.edu.br
 www.ifpb.edu.br/tsi
 www.ifpb.edu.br/rc
+www.ifpb.edu.br/rc/professores
 www.ifpb.edu.br/tsi/professores
 www.ifpb.edu.br/tsi/alunos
+www.ifpb.edu.br/rc/alunos
 www.google.com
 www.facebook.com
 www.github.com

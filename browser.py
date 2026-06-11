@@ -102,15 +102,15 @@ class Browser:
             res = "[ ]"
 
         return print(f"Historico completo: {res}")
-    
-    def obter_links_disponiveis(self, url):
+
+    def get_links(self, url):
         links = []
 
-        prefixo = url + "/"
-
         for u in self.urls_validas:
-            if u.startswith(prefixo):
-                resto = u[len(prefixo):]
+
+            if u.startswith(url + "/"):
+
+                resto = u.replace(url + "/", "")
 
                 if "/" not in resto:
                     links.append("/" + resto)
@@ -123,20 +123,20 @@ class Browser:
         self.exibir_conteudo()
 
         if self.home:
-            links = self.obter_links_disponiveis(self.home)
+            links = self.get_links(self.home)
 
             if links:
                 print("\nLinks disponíveis:")
                 for link in links:
                     print(link)
 
-    def obter_arquivo_pagina(self, url):
+    def get_arquivo(self, url):
         nome_arquivo = url.replace("/", "_") + ".txt"
         return f"paginas/{nome_arquivo}"
     
     def exibir_conteudo(self):
 
-        arquivo = self.obter_arquivo_pagina(self.home)
+        arquivo = self.get_arquivo(self.home)
 
         try:
             with open(arquivo, "r", encoding="utf-8") as f:
